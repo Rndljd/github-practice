@@ -1,0 +1,122 @@
+Absolutely! To maintain clean architecture and follow SOLID principles, I'll create:
+
+1. Interface: DataWarehousePlanService
+
+
+2. Implementation Class: DataWarehousePlanServiceImpl
+
+
+
+Step 1: Interface - DataWarehousePlanService.java
+
+This interface will define the contract for fetching and processing OOAEligibility and OOANationalPlan data.
+
+package com.optum.shop.service;
+
+import com.optum.shop.pgt.model.DataWarehousePlan;
+import java.util.List;
+
+public interface DataWarehousePlanService {
+    
+    /**
+     * Process and insert portfolio data.
+     * @param dataWarehousePlans List of data plans from DataWarehouse
+     * @param collectionName Name of the target collection
+     */
+    void processPortfolioData(List<DataWarehousePlan> dataWarehousePlans, String collectionName);
+}
+
+
+---
+
+Step 2: Implementation Class - DataWarehousePlanServiceImpl.java
+
+This class will implement the logic to manage the positive and negative scenarios from your user story.
+
+package com.optum.shop.service.impl;
+
+import com.optum.shop.pgt.model.DataWarehousePlan;
+import com.optum.shop.service.DataWarehousePlanService;
+import com.optum.shop.service.SafesPortfolioService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class DataWarehousePlanServiceImpl implements DataWarehousePlanService {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataWarehousePlanServiceImpl.class);
+
+    private final SafesPortfolioService safesPortfolioService;
+
+    public DataWarehousePlanServiceImpl(SafesPortfolioService safesPortfolioService) {
+        this.safesPortfolioService = safesPortfolioService;
+    }
+
+    @Override
+    public void processPortfolioData(List<DataWarehousePlan> dataWarehousePlans, String collectionName) {
+        boolean hasEligibility = dataWarehousePlans.stream()
+                .anyMatch(plan -> "OOAEligibility".equalsIgnoreCase(plan.getType()));
+
+        boolean hasNationalPlan = dataWarehousePlans.stream()
+                .anyMatch(plan -> "OOANationalPlan".equalsIgnoreCase(plan.getType()));
+
+        try {
+            if (hasEligibility && hasNationalPlan) {
+                safesPortfolioService.insertSafesMedPlans(dataWarehousePlans, collectionName);
+                logger.info("Both OOAEligibility and OOANationalPlan data added successfully.");
+            } else if (hasEligibility) {
+                safesPortfolioService.insertSafesMedPlans(dataWarehousePlans, collectionName);
+                logger.info("Only OOAEligibility data added successfully.");
+            } else if (hasNationalPlan) {
+                safesPortfolioService.insertSafesRxPlans(dataWarehousePlans, collectionName);
+                logger.info("Only OOANationalPlan data added successfully.");
+            } else {
+                logger.error("Error: Both OOAEligibility and OOANationalPlan data are missing.");
+            }
+        } catch (Exception e) {
+            logger.error("Error processing portfolio data: {}", e.getMessage());
+        }
+    }
+}
+
+
+---
+
+Step 3: Integration in SchedulerService
+
+In your SchedulerService.java, you can now inject this new service using dependency injection.
+
+package com.optum.shop.service;
+
+import com.optum.shop.pgt.model.DataWarehousePlan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class SchedulerService {
+
+    @Autowired
+    private DataWarehousePlanService dataWarehousePlanService;
+
+    public void initiatePortfolioProcessing(List<DataWarehousePlan> dataWarehousePlans) {
+        String collectionName = "primePortfolioCollection";
+        dataWarehousePlanService.processPortfolioData(dataWarehousePlans, collectionName);
+    }
+}
+
+
+---
+
+Key Benefits of This Approach
+
+✅ Promotes clean code by separating the contract (interface) from implementation.
+✅ Enhances flexibility if additional implementations are needed in the future.
+✅ Easily testable and maintainable with clear responsibilities.
+
+Would you like additional logic for error handling, logging improvements, or integration testing guidance?
+
