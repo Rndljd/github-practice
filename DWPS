@@ -1,2 +1,360 @@
-
+  @Query(value = "SELECT\n" +
+            "    DWP.Id,\n" +
+            "    DWP.gridName,\n" +
+            "    DWP.tabName,\n" +
+            "    DWP.platform,\n" +
+            "    IsNull (Replace (DWP.currentPlanCode, '-', ''), 'N/A') as PlanCode,\n" +
+            "    replace (COALESCE(NULLIF(stateCode, ''), 'N/A'), '', 'N/A') as StateAbbr,\n" +
+            "    license,\n" +
+            "    lineofbusiness as Segment,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(lobSegmentRange, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as SegmentRange,\n" +
+            "    IsNull (medDedPeriod, 'N/A') as DedPeriod,\n" +
+            "    IsNull (productType, 'N/A') as ProductType,\n" +
+            "    IsNull (product, 'N/A') as Product,\n" +
+            "    IsNull (prodStandard, 'N/A') as Standard,\n" +
+            "    IsNull (description, 'N/A') as Description,\n" +
+            "    hsaIndicator as hsaEligible,\n" +
+            "    IsNull (planCategory, 'N/A') as PlanCategory,\n" +
+            "    planCategory2,\n" +
+            "    planCategory3,\n" +
+            "    planCategory4,\n" +
+            "    legalEntity,\n" +
+            "    legalEntity2,\n" +
+            "    legalEntity3,\n" +
+            "    legalEntity4,\n" +
+            "    legalEntity5,\n" +
+            "    legalEntity6,\n" +
+            "    legalEntity7,\n" +
+            "    legalEntity8,\n" +
+            "    IsNull (uesDisplaySite, 'N/A') as MarketCodes,\n" +
+            "    marketCode,\n" +
+            "    IsNull (pedDentalProdType, 'N/A') as PedDentalProdType,\n" +
+            "    IsNull (Cast(proposalReadyDate as varchar), 'N/A') as PRDate,\n" +
+            "    IsNull (Cast(caseeffectivedate as varchar), 'N/A') as CEDate,\n" +
+            "    IsNull (Cast(retireDate as varchar), 'N/A') as RetiredDate,\n" +
+            "    IsNull (Cast(discontinueDate as varchar), 'N/A') as DiscontinuedDate,\n" +
+            "    replace (\n" +
+            "        replace (\n" +
+            "            COALESCE(NULLIF(trackingNumbers, ''), 'N/A'),\n" +
+            "            '',\n" +
+            "            'N/A'\n" +
+            "        ),\n" +
+            "        '''',\n" +
+            "        ''\n" +
+            "    ) as TrackingNumbers,\n" +
+            "    replace (COALESCE(NULLIF(hiosId, ''), 'N/A'), '', 'N/A') as HIOSPlanID,\n" +
+            "    replace (COALESCE(NULLIF(hiosIdA, ''), 'N/A'), '', 'N/A') as HIOSPlanID_A,\n" +
+            "    replace (COALESCE(NULLIF(hiosIdB, ''), 'N/A'), '', 'N/A') as HIOSPlanID_B,\n" +
+            "    replace (COALESCE(NULLIF(hiosIdC, ''), 'N/A'), '', 'N/A') as HIOSPlanID_C,\n" +
+            "    replace (COALESCE(NULLIF(hiosIdD, ''), 'N/A'), '', 'N/A') as HIOSPlanID_D,\n" +
+            "    replace (COALESCE(NULLIF(hiosIdE, ''), 'N/A'), '', 'N/A') as HIOSPlanID_E,\n" +
+            "    replace (COALESCE(NULLIF(hiosIdF, ''), 'N/A'), '', 'N/A') as HIOSPlanID_F,\n" +
+            "    replace (COALESCE(NULLIF(hiosIdG, ''), 'N/A'), '', 'N/A') as HIOSPlanID_G,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(uesDisplay, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as UESDisplay,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(ahpEligible, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as AHPEligible,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(ahpRxCodes, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as AHP_RxCodes,\n" +
+            "    IsNull (availableRxCodes, 'N/A') as RxPlans,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(availableRiders, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as AvailableRiders,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(optionalRiders, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as OptionalRiders,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(priorPlanCode, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as PriorPlanCode,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(whichVisitLimitsCombined, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as WhichVisitLimitsCombined,\n" +
+            "    DWP.visitLimits,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(rulePackageKey, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as RulePackageKey,\n" +
+            "    IsNull (metallicLevel, 'N/A') as MetallicLevel,\n" +
+            "    replace (COALESCE(NULLIF(careCash, ''), 'N/A'), '', 'N/A') as CareCash,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(rewardsPremiumOption, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as UHCRewardsPrem,\n" +
+            "    IsNull (Cast(medicalMarketingName as varchar(256)), 'N/A') as MarketingName,\n" +
+            "    IsNull (providerNetwork, 'N/A') as ProviderNetwork,\n" +
+            "    IsNull (hsaPreventiveList, 'N/A') as HsaPreventiveList,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(hraEligible, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as HraEligible,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(hraHsaEmployerFundingMin, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as HraHsaMin,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(hraHsaEmployerFundingMax, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as HraHsaMax,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(standardLabNetwork, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as StandardLabNetwork,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(standardMajorRadiologyNetwork, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as StandardMajorRadiologyNetwork,\n" +
+            "    IsNull (Cast(avMaxPercent as varchar), 'N/A') as ActuarialValueMax,\n" +
+            "    IsNull (Cast(avMinPercent as varchar), 'N/A') as ActuarialValueMin,\n" +
+            "    IsNull (exchangePlanOnOff, 'N/A') as ExchangePlan,\n" +
+            "    IsNull (PGF.AggregateGroupIndicator, 'N/A') as AggregateGroupIndicator,\n" +
+            "    IsNull (globalOfficeCopay, 'N/A') as GlobalOfficeCopay,\n" +
+            "    IsNull (podVsPoc, 'N/A') as Pocvspod,\n" +
+            "    IsNull (combinedTherapyVisitLimits, 'N/A') as CombTherapyLimits,\n" +
+            "    IsNull (combinedTherapyVisitLimitsDetail, 'N/A') as CombTherapyLimitsDetail,\n" +
+            "    IsNull (Cast(currentPlanCodeNICE as varchar), 'N/A') as currentNICEPlanCode,\n" +
+            "    IsNull (Cast(currentPlanCodeNICEAB1401 as varchar), 'N/A') as currentNICEPlanCodeAB1401,\n" +
+            "    IsNull (\n" +
+            "        Cast(currentNICEPlanCodeCalCobra as varchar),\n" +
+            "        'N/A'\n" +
+            "    ) as currentNICEPlanCodeCalCobra,\n" +
+            "    IsNull (Cast(currentPlanCodeNICECobra as varchar), 'N/A') as currentNICEPlanCodeCobra,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(preferredLabNetwork, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as PreferredLabNetwork,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(startSimple, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as startSimple,\n" +
+            "    replace (\n" +
+            "        COALESCE(NULLIF(mskLowBack, ''), 'N/A'),\n" +
+            "        '',\n" +
+            "        'N/A'\n" +
+            "    ) as mskLowBack,\n" +
+            "    IsNull (Cast(uhcOonCoins as varchar) + '%', 'N/A') as coinsNonNet,\n" +
+            "    Isnull (Cast(uhcInnCoins as varchar) + '%', 'N/A') as coinsNet,\n" +
+            "    IsNull (pedDentalDedStrategy, 'N/A') as pedDentalDedStrategy,\n" +
+            "    DWP.FileId,\n" +
+            "    DWP.TabId,\n" +
+            "    IsNull (Cast(DWP.RowNumber as varchar), 'N/A') as rowNumber,\n" +
+            "    IsNull (alternateDescription, 'N/A') as alternateDescription,\n" +
+            "    DWP.availableRxCodes,\n" +
+            "    DWP.avRxPairingEndDate,\n" +
+            "    DWP.avRxPairingStartDate,\n" +
+            "    DWP.childOnlyOffering,\n" +
+            "    DWP.childOnlyPlanHiosId,\n" +
+            "    DWP.cirrusBenefitPlanId,\n" +
+            "    DWP.cirrusProductId,\n" +
+            "    DWP.combinedRxPlanCode,\n" +
+            "    DWP.coeRulesApply,\n" +
+            "    DWP.csrAmericanIndianPlan,\n" +
+            "    DWP.defaultRx,\n" +
+            "    DWP.ehbPercentOfTotalPrem,\n" +
+            "    DWP.hiosDescriptor,\n" +
+            "    DWP.hiosPlanIdforQHP,\n" +
+            "    DWP.hiosReason,\n" +
+            "    DWP.innFamilyDeductible,\n" +
+            "    DWP.innFamilyDeductibleDesigNetwork,\n" +
+            "    DWP.innFamilyDeductibleNetwork,\n" +
+            "    DWP.innFamilyDeductibleTier1,\n" +
+            "    DWP.innFamilyDeductibleTier2,\n" +
+            "    DWP.innFamilyOopm,\n" +
+            "    DWP.innFamilyOopmDesigNetwork,\n" +
+            "    DWP.innFamilyOopmNetwork,\n" +
+            "    DWP.innFamilyOopmTier1,\n" +
+            "    DWP.innFamilyOopmTier2,\n" +
+            "    DWP.innIndividualDeductible,\n" +
+            "    DWP.innIndividualDeductibleDesigNetwork,\n" +
+            "    DWP.innIndividualDeductibleNetwork,\n" +
+            "    DWP.innIndividualDeductibleTier1,\n" +
+            "    DWP.innIndividualDeductibleTier2,\n" +
+            "    DWP.innIndividualOopm,\n" +
+            "    DWP.innIndividualOopmDesigNetwork,\n" +
+            "    DWP.innIndividualOopmNetwork,\n" +
+            "    DWP.innIndividualOopmTier1,\n" +
+            "    DWP.innIndividualOopmTier2,\n" +
+            "    DWP.innPedDentalFamDed,\n" +
+            "    DWP.innPedDentalSingDed,\n" +
+            "    DWP.marketingGrid,\n" +
+            "    DWP.medDedType,\n" +
+            "    DWP.medRxDedType,\n" +
+            "    DWP.networkScheduleId,\n" +
+            "    DWP.onnPedDentalFamDed,\n" +
+            "    DWP.onnPedDentalSingDed,\n" +
+            "    DWP.oonFamilyDeductible,\n" +
+            "    DWP.oonFamilyOopm,\n" +
+            "    DWP.oonIndividualDeductible,\n" +
+            "    DWP.oonIndividualOopm,\n" +
+            "    DWP.pedDentalDedAppliesTo,\n" +
+            "    DWP.pedVisionDedAppliesTo,\n" +
+            "    DWP.pedVisionDedIncInMed,\n" +
+            "    DWP.planHaveCopay,\n" +
+            "    DWP.planOfferCompositeRating,\n" +
+            "    DWP.preDedAllowAllBenefit,\n" +
+            "    DWP.preDedAllowAmbErOnly,\n" +
+            "    DWP.preDedAllowAmbErOthers,\n" +
+            "    DWP.preDedAllowOthers,\n" +
+            "    DWP.primeNetworkCodeA,\n" +
+            "    DWP.primeNetworkCodeB,\n" +
+            "    DWP.primeNetworkCodeC,\n" +
+            "    DWP.primeNetworkCodeD,\n" +
+            "    DWP.primeNetworkCodeE,\n" +
+            "    DWP.primeNetworkCodeF,\n" +
+            "    DWP.primeNetworkCodeG,\n" +
+            "    DWP.primeProdType,\n" +
+            "    DWP.priorHiosId,\n" +
+            "    DWP.priorTrackingNumbers,\n" +
+            "    DWP.serviceAreaA,\n" +
+            "    DWP.serviceAreaB,\n" +
+            "    DWP.serviceAreaC,\n" +
+            "    DWP.serviceAreaD,\n" +
+            "    DWP.uhcInnBasePhysicianCoins,\n" +
+            "    DWP.uhcInnCoinsDesigNetworkPcpObgyn,\n" +
+            "    DWP.uhcInnCoinsDesigNetworkWithoutReferral,\n" +
+            "    DWP.uhcInnCoinsDesigNetworkWithReferral,\n" +
+            "    DWP.uhcInnCoinsNetworkPcpObgyn,\n" +
+            "    DWP.uhcInnCoinsNetworkWithoutReferral,\n" +
+            "    DWP.uhcInnCoinsNetworkWithReferral,\n" +
+            "    DWP.uhcInnCoinsTier1,\n" +
+            "    DWP.uhcInnCoinsTier2,\n" +
+            "    DWP.uhcInnCoinsWithOutReferral,\n" +
+            "    DWP.uhcInnDesignatedPcpCoins,\n" +
+            "    DWP.uhcInnDesignatedSpecCoins,\n" +
+            "    DWP.uhcInnNonDesignatedPcpCoins,\n" +
+            "    DWP.uhcInnNonDesignatedSpecCoins,\n" +
+            "    DWP.uhcInnNonPhysicianCoins,\n" +
+            "    DWP.uhcInnPcpCoinsDesigNetwork,\n" +
+            "    DWP.uhcInnPcpCoinsNetwork,\n" +
+            "    DWP.uhcInnSpecCoinsDesigNetwork,\n" +
+            "    DWP.uhcInnSpecCoinsNetwork,\n" +
+            "    DWP.umPlanDetermination,\n" +
+            "    DWP.uniquePlanDesign,\n" +
+            "    DWP.IsBenefitAvailable,\n" +
+            "    DWP.innIndividualUberOopm,\n" +
+            "    DWP.innIndividualUberOopmDedAppliesTo,\n" +
+            "    DWP.innFamilyUberOopm,\n" +
+            "    DWP.innFamilyUberOopmDedAppliesTo,\n" +
+            "    DWP.otherInnCoins,\n" +
+            "    DWP.optstatespecific1,\n" +
+            "    DWP.optstatespecific2,\n" +
+            "    DWP.optstatespecific3,\n" +
+            "    DWP.optstatespecific4,\n" +
+            "    DWP.PlanStringLitteral,\n" +
+            "    DWP.gatekeeper,\n" +
+            "    DWP.includeOutOfArea,\n" +
+            "    DWP.innIndividualOopmInFamOOPM,\n" +
+            "    DWP.ideaDisplay,\n" +
+            "    DWP.serviceArea,\n" +
+            "    DWP.oonReimbursementType,\n" +
+            "    DWP.ratingAreaA,\n" +
+            "    DWP.ratingAreaB,\n" +
+            "    DWP.ratingAreaC,\n" +
+            "    DWP.ratingAreaD,\n" +
+            "    DWP.motionIndicator,\n" +
+            "    DWP.newBusinessQuotingFromDate,\n" +
+            "    DWP.newBusinessQuotingThruDate,\n" +
+            "    DWP.caseInstallFromDate,\n" +
+            "    DWP.caseInstallThruDate,\n" +
+            "    DWP.renewalBatchFromDate,\n" +
+            "    DWP.renewalBatchThruDate,\n" +
+            "    DWP.renewalQuoteFromDate,\n" +
+            "    DWP.renewalQuoteThruDate,\n" +
+            "    DWP.priorPlanCodeNICE,\n" +
+            "    DWP.priorPlanCodeNICECobra,\n" +
+            "    DWP.priorPlanCodeNICEAB1401,\n" +
+            "    DWP.priorNICEPlanCodeCalCobra,\n" +
+            "    DWP.availableRxCodesPrime,\n" +
+            "    DWP.pediatricDentalAdminCode,\n" +
+            "    DWP.pediatricVisionAdminCode,\n" +
+            "    DWP.behavioralHealthCode,\n" +
+            "    DWP.acupunctureCode,\n" +
+            "    DWP.chiropracticCode,\n" +
+            "    DWP.uhcMotionRiderCode,\n" +
+            "    DWP.infertilityCode,\n" +
+            "    DWP.identifier,\n" +
+            "    DWP.archetype,\n" +
+            "    DWP.groupId,\n" +
+            "    DWP.groupStructureProductId,\n" +
+            "    DWP.medOopmType,\n" +
+            "    DWP.ratingArea,\n" +
+            "    DWP.adultDentalDedStrategy,\n" +
+            "    DWP.adultDentalProdType,\n" +
+            "    DWP.adultDentalDedAppliesTo,\n" +
+            "    DWP.innAdultDentalSingDed,\n" +
+            "    DWP.innAdultDentalFamDed,\n" +
+            "    DWP.onnAdultDentalSingDed,\n" +
+            "    DWP.onnAdultDentalFamDed,\n" +
+            "    DWP.adultDentalDedIncInMed,\n" +
+            "    DWP.adultVisionDedIncInMed,\n" +
+            "    DWP.adultVisionDedAppliesTo,\n" +
+            "    DWP.adultDentalApplyToMedicalOopm,\n" +
+            "    DWP.adultDentalMaximumBenefit,\n" +
+            "    DWP.adultVisionApplyToMedicalOopm,\n" +
+            "    DWP.specialtyVisionRider,\n" +
+            "    DWP.planCodeNICERewardsPremiumOption,\n" +
+            "    DWP.planSelectionCode,\n" +
+            "    DWP.medRxOOPMType,\n" +
+            "    DWP.newBusinessOrRenewal,\n" +
+            "    DWP.basePlan,\n" +
+            "    DWP.pdl,\n" +
+            "    DWP.rxNetwork,\n" +
+            "    DWP.intlCoins,\n" +
+            "    DWP.intlIndividualDeductible,\n" +
+            "    DWP.intlFamilyDeductible,\n" +
+            "    DWP.intlIndividualOOPM,\n" +
+            "    DWP.intlFamilyOOPM,\n" +
+            "    DWP.policyMaximum,\n" +
+            "    DWP.medicalAnnualMaximum,\n" +
+            "    DWP.medicalMaximumperTrip,\n" +
+            "    DWP.rpdProductSubcategories,\n" +
+            "    DWP.srgId,\n" +
+            "    DWP.emergencyServicesUS,\n" +
+            "    DWP.surestCode,\n" +
+            "    DWP.brandingEntity,\n" +
+            "    DWP.network,\n" +
+            "    DWP.productName,\n" +
+            "    DWP.accumCrossApplyInd,\n" +
+            "    DWP.accumCrossInnToOon,\n" +
+            "    DWP.accumCrossOonToInn,\n" +
+            "    DWP.surestProduct,\n" +
+            "    DWP.cirrusTrackingNumbers,\n" +
+            "    DWP.portalSupressBrokEmp,\n" +
+            "    DWP.motionIndicatorEffectiveDate,\n" +
+            "    DWP.careCashEffectiveDate\n" +
+            "    DWP.OOAEligibility\n" +
+            "    DWP.OOANationalPlan\n" +
+            "FROM\n" +
+            "    PortfolioGridTool.DataWarehousePlan DWP\n" +
+            "    LEFT JOIN PortfolioGridTool.PortfolioGridFile PGF on DWP.fileID = PGF.ID\n" +
+            "WHERE (:isPrime = 1 AND DWP.stateCode <> 'NA') OR (:isPrime = 0 AND DWP.stateCode = 'NA')", nativeQuery = true)
 
